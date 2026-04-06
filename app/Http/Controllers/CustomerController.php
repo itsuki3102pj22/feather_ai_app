@@ -8,6 +8,7 @@ use App\Models\Contract;
 
 class CustomerController extends Controller
 {
+    // 得意先一覧と契約情報表示
     public function index(Request $request)
     {
         $customers = Customer::all();
@@ -24,6 +25,7 @@ class CustomerController extends Controller
         return view('customers.index', compact('customers', 'selectedCustomer', 'contracts'));
     }
 
+    // 得意先登録
     public function store(Request $request)
     {
         Customer::create([
@@ -35,6 +37,7 @@ class CustomerController extends Controller
         return redirect('/customers')->with('success', '得意先を登録しました。');
     }
 
+    // 契約登録
     public function storeContract(Request $request)
     {
         Contract::create([
@@ -46,20 +49,50 @@ class CustomerController extends Controller
             'contract_kg'    => $request->input('contract_kg'),
             'shipped_kg'     => 0,
             'unit_price_jpy' => $request->input('unit_price_jpy'),
+            'comment'        => $request->input('comment'),
         ]);
         return redirect('/customers?customer_id=' . $request->input('customer_id'))
             ->with('success', '契約を登録しました');
     }
 
+    // 出荷数量
     public function addShipment(Request $request)
     {
         $contract = Contract::find($request->input('contract_id'));
+
         if ($contract) {
-            $contract->shipped_kg += $request->input('add_kg');
-            $contract->save();
+            $remaining = $contract->contract_kg - $contract->shipped_kg;
+            $addKg = min($request->input('add_kg'), $remaining); // 追加数量は残数量までに制限
+
+            if ($addKg > 0) {
+                $contract->shipped_kg += $addKg;
+                $contract->save();
+                $message = $addKg . 'kgを出荷いたしました。';
+            } else {
+                $message = '契約数量に達しているため出荷できません。';
+            }
         }
 
         return redirect('/customers?customer_id=' . $request->input('customer_id'))
-            ->with('success', '出荷数量を更新しました');
+            ->with('success', $message ?? '出荷情報を更新しました');
+    }
+
+    // 削除
+    public function destroyContract(Request $request)
+    {
+        $contractId = $request->input('contract_id');
+        $customerId = $request->input('customer_id');
+
+        $contract = Contract::find($contractId);
+
+        if ($contract) {
+            $contract->delete();
+            $message = '契約を削除しました';
+        } else {
+            $message = '契約が見つかりませんでした';
+        }
+
+        return redirect('/customers?customer_id=' . $customerId)
+            ->with('success', $message);
     }
 }

@@ -1,40 +1,194 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>得意先管理</title>
     <style>
-        body { font-family: sans-serif; max-width: 960px; margin: 40px auto; padding: 0 20px; }
-        h1 { color: #2c3e50; border-bottom: 3px solid #8e44ad; padding-bottom: 10px; }
-        nav { margin-bottom: 24px; }
-        nav a { margin-right: 16px; color: #2980b9; text-decoration: none; font-weight: bold; }
-        .card { background: #f8f9fa; border-radius: 8px; padding: 20px; margin: 20px 0; }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-        select, input { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; }
-        .btn { padding: 9px 18px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; text-decoration: none; display: inline-block; }
-        .btn-purple { background: #8e44ad; color: white; }
-        .btn-blue   { background: #2980b9; color: white; }
-        .btn-green  { background: #27ae60; color: white; }
-        .btn-sm     { padding: 4px 12px; font-size: 13px; }
-        table { width: 100%; border-collapse: collapse; }
-        th { background: #8e44ad; color: white; padding: 10px 8px; text-align: left; font-size: 13px; }
-        td { padding: 10px 8px; border-bottom: 1px solid #e0e0e0; font-size: 14px; }
-        tr:hover td { background: #f0f0f0; }
-        .progress-bar { background: #ddd; border-radius: 4px; height: 10px; width: 100%; }
-        .progress-fill { background: #27ae60; border-radius: 4px; height: 10px; }
-        .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: bold; }
-        .white { background: #eaf4fb; color: #1a5276; }
-        .grey  { background: #f4f6f7; color: #4d5656; }
-        .alert { background: #d4edda; border: 1px solid #c3e6cb; border-radius: 6px; padding: 10px 16px; margin-bottom: 16px; color: #155724; }
-        .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:100; }
-        .modal { background:white; border-radius:8px; padding:28px; width:480px; margin:80px auto; }
-        .modal h2 { margin-top:0; }
-        .form-group { margin: 12px 0; }
-        .form-group label { display:block; font-size:13px; font-weight:bold; margin-bottom:4px; color:#555; }
-        .form-group input, .form-group select { width:100%; box-sizing:border-box; }
+        body {
+            font-family: sans-serif;
+            max-width: 960px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #8e44ad;
+            padding-bottom: 10px;
+        }
+
+        nav {
+            margin-bottom: 24px;
+        }
+
+        nav a {
+            margin-right: 16px;
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        select,
+        input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .btn {
+            padding: 9px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-purple {
+            background: #8e44ad;
+            color: white;
+        }
+
+        .btn-blue {
+            background: #2980b9;
+            color: white;
+        }
+
+        .btn-green {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 4px 12px;
+            font-size: 13px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #8e44ad;
+            color: white;
+            padding: 10px 8px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
+        }
+
+        tr:hover td {
+            background: #f0f0f0;
+        }
+
+        .progress-bar {
+            background: #ddd;
+            border-radius: 4px;
+            height: 10px;
+            width: 100%;
+        }
+
+        .progress-fill {
+            background: #27ae60;
+            border-radius: 4px;
+            height: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .white {
+            background: #eaf4fb;
+            color: #1a5276;
+        }
+
+        .grey {
+            background: #f4f6f7;
+            color: #4d5656;
+        }
+
+        .alert {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 6px;
+            padding: 10px 16px;
+            margin-bottom: 16px;
+            color: #155724;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 8px;
+            padding: 28px;
+            width: 480px;
+            margin: 80px auto;
+        }
+
+        .modal h2 {
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin: 12px 0;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            box-sizing: border-box;
+        }
     </style>
 </head>
+
 <body>
     <nav>
         <a href="/simulator">価格計算</a>
@@ -98,7 +252,10 @@
                     <th>残(kg)</th>
                     <th>進捗</th>
                     <th>契約金額</th>
+                    <th>出荷金額</th>
+                    <th>コメント</th>
                     <th>出荷追加</th>
+                    <th>削除</th>
                 </tr>
             </thead>
             <tbody>
@@ -106,8 +263,8 @@
                 <tr>
                     <td>{{ $c->season }}</td>
                     <td>
-                        <span class="badge {{ $c->feather_type === 'ホワイトダック' ? 'white' : 'grey' }}">
-                            {{ $c->feather_type === 'ホワイトダック' ? 'WD' : 'GD' }}
+                        <span class="badge {{ str_contains($c->feather_type, 'ホワイト') ? 'white' : 'grey' }}">
+                            {{ $c->feather_type }}
                         </span>
                     </td>
                     <td>{{ $c->origin }}</td>
@@ -126,17 +283,39 @@
                     <td>
                         @if($c->unit_price_jpy)
                         ¥{{ number_format($c->total_amount, 0) }}
-                        @else
-                        ―
-                        @endif
+                        @else ― @endif
                     </td>
                     <td>
+                        @if($c->unit_price_jpy)
+                        ¥{{ number_format($c->shipped_amount, 0) }}
+                        @else ― @endif
+                    </td>
+                    <td style="font-size:12px;color:#666;max-width:120px;">
+                        {{ $c->comment ?: '―' }}
+                    </td>
+                    <td>
+                        @if($c->remaining_kg > 0)
                         <form method="POST" action="/customers/ship" style="display:flex;gap:4px;">
                             @csrf
                             <input type="hidden" name="contract_id" value="{{ $c->id }}">
                             <input type="hidden" name="customer_id" value="{{ $selectedCustomer->id }}">
-                            <input type="number" name="add_kg" step="0.1" min="0" style="width:70px;padding:4px;" placeholder="kg">
-                            <button type="submit" class="btn btn-green btn-sm">追加</button>
+                            <input type="number" name="add_kg" step="0.1" min="0.1"
+                                max="{{ $c->remaining_kg }}"
+                                style="width:70px;padding:4px;" placeholder="kg">
+                            <button type="submit" class="btn btn-green btn-sm">出荷</button>
+                        </form>
+                        @else
+                        <span style="color:#27ae60;font-size:12px;font-weight:bold;">完了</span>
+                        @endif
+                    </td>
+                    <td>
+                        <form method="POST" action="/customers/contract/destroy"
+                            onsubmit="return confirm('この契約を削除しますか？')">
+                            @csrf
+                            <input type="hidden" name="contract_id" value="{{ $c->id }}">
+                            <input type="hidden" name="customer_id" value="{{ $selectedCustomer->id }}">
+                            <button type="submit" class="btn btn-sm"
+                                style="background:#e74c3c;color:white;">削除</button>
                         </form>
                     </td>
                 </tr>
@@ -196,7 +375,9 @@
                     <label>羽毛種</label>
                     <select name="feather_type">
                         <option value="ホワイトダック">ホワイトダック</option>
+                        <option value="ホワイトグース">ホワイトグース</option>
                         <option value="グレーダック">グレーダック</option>
+                        <option value="グレーグース">グレーグース</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -212,6 +393,7 @@
                 <div class="form-group">
                     <label>ダウン比率</label>
                     <select name="down_ratio">
+                        <option value="50">50%</option>
                         <option value="70">70%</option>
                         <option value="75">75%</option>
                         <option value="80">80%</option>
@@ -229,6 +411,10 @@
                     <label>契約単価（円/kg）※任意</label>
                     <input type="number" name="unit_price_jpy" step="0.1" min="0" placeholder="例：3500">
                 </div>
+                <div class="form-group">
+                    <label>コメント（任意）</label>
+                    <input type="text" name="comment" placeholder="備考・特記事項など">
+                </div>
                 <div style="display:flex;gap:8px;margin-top:16px;">
                     <button type="submit" class="btn btn-blue" style="flex:1;">登録する</button>
                     <button type="button" class="btn" style="flex:1;background:#95a5a6;color:white;" onclick="document.getElementById('newContractModal').style.display='none'">キャンセル</button>
@@ -238,4 +424,5 @@
     </div>
 
 </body>
+
 </html>

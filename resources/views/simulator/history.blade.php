@@ -118,10 +118,10 @@
     </div>
 
     <script>
-        @if($monthly - > count() > 0)
-        const labels = @json($monthly - > pluck('month'));
-        const prices = @json($monthly - > pluck('avg_price'));
-        const rates = @json($monthly - > pluck('avg_rate'));
+        @if($monthly->count() > 0)
+        const labels = @json($monthly->pluck('month'));
+        const prices = @json($monthly->pluck('avg_price'));
+        const rates = @json($monthly->pluck('avg_rate'));
 
         new Chart(document.getElementById('monthlyChart'), {
             type: 'line',

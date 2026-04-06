@@ -122,7 +122,9 @@
             <label>羽毛の種類</label>
             <select name="feather_type">
                 <option value="ホワイトダック">ホワイトダック（White Duck）</option>
+                <option value="ホワイトグース">ホワイトグース（White Goose）</option>
                 <option value="グレーダック">グレーダック（Grey Duck）</option>
+                <option value="グレーグース">グレーグース（Grey Goose）</option>
             </select>
         </div>
 
@@ -136,24 +138,9 @@
                 <option value="ウクライナ">ウクライナ</option>
             </select>
         </div>
-
-        <div class="form-group">
-            <label>ダウン比率（%）</label>
-            <select name="down_ratio">
-                <option value="70">70%</option>
-                <option value="75">75%</option>
-                <option value="80">80%</option>
-                <option value="85" selected>85%</option>
-                <option value="90">90%</option>
-                <option value="93">93%</option>
-                <option value="95">95%</option>
-            </select>
-            <div class="hint">ダウン85%を基準とします</div>
-        </div>
-
         <div class="form-group">
             <label>羽毛原料単価（ドル/kg）</label>
-            <input type="number" name="feather_usd" value="5" step="0.01" min="0">
+            <input type="number" name="feather_usd" value="95" step="0.01" min="0">
             <div class="hint">ホワイトダック85%の現地仕入れ価格</div>
         </div>
 

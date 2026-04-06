@@ -16,6 +16,7 @@ class Contract extends Model
         'contract_kg',
         'shipped_kg',
         'unit_price_jpy',
+        ('comment'),
     ];
 
     public function customer()
@@ -40,6 +41,12 @@ class Contract extends Model
     public function getTotalAmountAttribute()
     {
         return $this->contract_kg * ($this->unit_price_jpy ?? 0);
+    }
+
+    // 出荷合計金額
+    public function getShippedAmountAttribute()
+    {
+        return $this->shipped_kg * ($this->unit_price_jpy ?? 0);
     }
 }
 
