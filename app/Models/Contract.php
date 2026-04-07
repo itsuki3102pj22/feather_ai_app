@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 
 class Contract extends Model
@@ -16,7 +15,14 @@ class Contract extends Model
         'contract_kg',
         'shipped_kg',
         'unit_price_jpy',
-        ('comment'),
+        'comment',
+    ];
+
+    protected $casts = [
+        'down_ratio'     => 'decimal:1',
+        'contract_kg'    => 'decimal:2',
+        'shipped_kg'     => 'decimal:2',
+        'unit_price_jpy' => 'decimal:2',
     ];
 
     public function customer()

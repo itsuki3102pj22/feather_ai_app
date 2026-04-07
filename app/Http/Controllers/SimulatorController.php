@@ -15,6 +15,29 @@ class SimulatorController extends Controller
 
     public function analyze(Request $request)
     {
+        //　入力バリデーション
+        $request->validate([
+            'usd_jpy'       => 'required|numeric|min:1|max:1000',
+            'feather_usd'   => 'required|numeric|min:0.01|max:9999',
+            'feather_type'  => 'required|in:ホワイトダック,グレーダック,ホワイトグース,グレーグース',
+            'origin'        => 'required|in:中国,フランス,ロシア,イタリア,ウクライナ,ポーランド',
+            'profit_rate'   => 'required|numeric|min:0|max:100',
+            'customer_name' => 'nullable|string|max:100',
+        ], [
+            'usd_jpy.required'      => 'ドル円レートを入力してください',
+            'usd_jpy.numeric'       => 'ドル円レートは数値で入力してください',
+            'usd_jpy.min'           => 'ドル円レートが低すぎます',
+            'usd_jpy.max'           => 'ドル円レートが高すぎます',
+            'feather_usd.required'  => 'ドル単価を入力してください',
+            'feather_usd.numeric'   => 'ドル単価は数値で入力してください',
+            'feather_usd.min'       => 'ドル単価は0より大きい値を入力してください',
+            'profit_rate.required'  => '利益率を入力してください',
+            'profit_rate.min'       => '利益率は0%以上で入力してください',
+            'profit_rate.max'       => '利益率は100%以下で入力してください',
+            'feather_type.in'       => '羽毛種の選択が正しくありません',
+            'origin.in'             => '産地の選択が正しくありません',
+        ]);
+
         // デフォルト設定
         $usdJpy      = $request->input('usd_jpy', 150);
         $featherUsd  = $request->input('feather_usd', 95);
@@ -29,6 +52,7 @@ class SimulatorController extends Controller
             'ロシア'     => ['ホワイトダック' => 1.10, 'グレーダック' => 0.95, 'ホワイトグース' => 1.50, 'グレーグース' => 1.30],
             'イタリア'   => ['ホワイトダック' => 1.30, 'グレーダック' => 1.15, 'ホワイトグース' => 1.70, 'グレーグース' => 1.50],
             'ウクライナ' => ['ホワイトダック' => 1.05, 'グレーダック' => 0.90, 'ホワイトグース' => 1.45, 'グレーグース' => 1.25],
+            'ポーランド' => ['ホワイトダック' => 1.10, 'グレーダック' => 0.95, 'ホワイトグース' => 1.50, 'グレーグース' => 1.30],
         ];
 
         // ダウン比率リスト
@@ -112,18 +136,19 @@ class SimulatorController extends Controller
 
         return $pdf->download('見積書_' . ($customerName ?: '無題') . '.pdf');
     }
-
     public function history()
     {
+        // 月別集計：(ドル単価 * 為替) を計算してから平均(AVG)を取る
         $monthly = \App\Models\Simulation::selectRaw(
             "DATE_FORMAT(created_at, '%Y-%m') as month,
-             AVG(feather_jpy) as avg_price,
-             AVG(usd_jpy) as avg_rate"
+         AVG(feather_usd * usd_jpy) as avg_price,
+         AVG(usd_jpy) as avg_rate"
         )
-            ->groupByRaw("DATE_FORMAT(created_at, '%Y-%m')")
-            ->orderByRaw("MIN(created_at) ASC")
+            ->groupBy("month")
+            ->orderBy("month", "ASC")
             ->get();
 
+        // 直近20件の履歴
         $histories = \App\Models\Simulation::orderBy('created_at', 'desc')
             ->take(20)
             ->get();

@@ -31,6 +31,20 @@ class PriceChartController extends Controller
 
     public function store(Request $request)
     {
+        // 入力バリデーション
+        $request->validate([
+            'record_date'    => 'required|date',
+            'period_type'    => 'required|in:monthly,weekly',
+            'white_duck_usd' => 'required|numeric|min:0.01|max:9999',
+            'usd_jpy'        => 'required|numeric|min:1|max:1000',
+        ], [
+            'record_date.required'    => '記録日を選択してください',
+            'record_date.date'        => '正しい日付を入力してください',
+            'white_duck_usd.required' => 'ドル単価を入力してください',
+            'white_duck_usd.min'      => 'ドル単価は0より大きい値を入力してください',
+            'usd_jpy.required'        => 'ドル円レートを取得できませんでした。再読み込みしてください',
+        ]);
+
         $usdJpy = $request->input('usd_jpy');
         $whiteDuckUsd = $request->input('white_duck_usd');
         $whiteDuckJpy = $whiteDuckUsd * $usdJpy;
