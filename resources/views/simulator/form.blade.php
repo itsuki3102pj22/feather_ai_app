@@ -109,7 +109,11 @@
             </div>
         </div>
         <nav class="flex-1 space-y-1">
-            <a class="flex items-center gap-3 px-4 py-3 bg-white text-[#61b05e] font-bold rounded-lg transition-all duration-300 ease-out hover:translate-x-1 sidebar-active font-headline text-sm" href="/simulator">
+            <a class="flex items-center gap-3 px-4 py-3 text-[#455f88] hover:bg-[#ebeef0] rounded-lg transition-all duration-300 ease-out hover:translate-x-1 font-headline text-sm" href="/dashboard">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span>ダッシュボード</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 bg-white text-[#61b05e] font-bold rounded-lg transition-all duration-300 ease-out hover:translate-x-1 sidebar-active font-headline text-sm" href="/simulator/form">
                 <span class="material-symbols-outlined" data-icon="calculate" style="font-variation-settings: 'FILL' 1;">calculate</span>
                 <span>価格計算</span>
             </a>

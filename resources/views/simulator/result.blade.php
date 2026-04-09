@@ -67,7 +67,7 @@
             </div>
         </div>
         <nav class="flex-1 space-y-1">
-            <a class="flex items-center gap-3 px-4 py-3 bg-white text-accent-green font-bold rounded-lg shadow-sm border border-slate-100" href="/simulator">
+            <a class="flex items-center gap-3 px-4 py-3 bg-white text-accent-green font-bold rounded-lg shadow-sm border border-slate-100" href="/simulator/form">
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calculate</span>
                 <span>価格計算</span>
             </a>
@@ -78,7 +78,7 @@
         <header class="sticky top-0 w-full z-30 bg-white/70 backdrop-blur-md flex justify-between items-center px-8 py-4 border-b border-slate-100">
             <h2 class="font-extrabold text-navy-dark text-xl font-headline">シミュレーション結果</h2>
             <div class="flex items-center gap-4">
-                <a href="/simulator" class="text-sm font-bold text-secondary hover:text-navy-dark transition-colors flex items-center gap-1">
+                <a href="/simulator/form" class="text-sm font-bold text-secondary hover:text-navy-dark transition-colors flex items-center gap-1">
                     <span class="material-symbols-outlined text-sm">arrow_back</span>条件入力に戻る
                 </a>
             </div>
@@ -92,7 +92,7 @@
                     </div>
                     <div>
                         <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">羽毛種</p>
-                        <p class="text-base font-bold text-navy-dark">{{ $featherType }}</p>
+                        <p class="text-base font-bold text-navy-dark">{{ $simulation->feather_type }}</p>
                     </div>
                 </div>
                 <div class="bento-card bg-white p-5 rounded-2xl border border-slate-100 flex items-center gap-4">
@@ -101,7 +101,7 @@
                     </div>
                     <div>
                         <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">ドル円レート</p>
-                        <p class="text-base font-bold text-accent-green">¥{{ number_format($usdJpy, 2) }}</p>
+                        <p class="text-base font-bold text-accent-green">¥{{ number_format($simulation->usd_jpy, 2) }}</p>
                     </div>
                 </div>
                 <div class="bento-card bg-white p-5 rounded-2xl border border-slate-100 flex items-center gap-4">
@@ -110,7 +110,7 @@
                     </div>
                     <div>
                         <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">ドル単価</p>
-                        <p class="text-base font-bold text-navy-dark">${{ number_format($featherUsd, 2) }}/kg</p>
+                        <p class="text-base font-bold text-navy-dark">${{ number_format($simulation->feather_usd, 2) }}/kg</p>
                     </div>
                 </div>
                 <div class="bento-card bg-white p-5 rounded-2xl border border-slate-100 flex items-center gap-4">
@@ -119,7 +119,7 @@
                     </div>
                     <div>
                         <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">得意先</p>
-                        <p class="text-base font-bold text-navy-dark truncate max-w-[120px]">{{ $customerName ?: '未設定' }}</p>
+                        <p class="text-base font-bold text-navy-dark truncate max-w-[120px]">{{ $simulation->customer_name ?: '未設定' }}</p>
                     </div>
                 </div>
             </section>
@@ -166,7 +166,7 @@
                                 </td>
                                 @foreach($downRatios as $ratio)
                                 <td class="p-5 text-sm text-center font-medium cursor-pointer hover:text-accent-green transition-colors {{ $ratio == 85 ? 'font-extrabold text-navy-dark bg-slate-50/40' : 'text-slate-600' }}"
-                                    onclick="openModal({{ json_encode($row) }}, {{ $profitRate }}, '{{ $featherType }}', {{ $usdJpy }}, {{ $featherUsd }}, '{{ $customerName }}', {{ $ratio }})">
+                                    onclick="openModal({{ json_encode($row) }}, {{ $simulation->profit_rate }}, '{{ $simulation->feather_type }}', {{ $simulation->usd_jpy }}, {{ $simulation->feather_usd }}, '{{ $simulation->customer_name }}', {{ $ratio }})">
                                     ¥{{ number_format($row['prices'][$ratio]['sell']) }}
                                 </td>
                                 @endforeach
@@ -211,7 +211,7 @@
         </div>
     </div>
 
-    <form id="pdfMultipleForm" action="/simulator/pdf-multiple" method="POST" style="display:none;">@csrf<input type="hidden" name="items" id="pdf-items"><input type="hidden" name="customer_name" value="{{ $customerName }}"></form>
+    <form id="pdfMultipleForm" action="/simulator/pdf-multiple" method="POST" style="display:none;">@csrf<input type="hidden" name="items" id="pdf-items"><input type="hidden" name="customer_name" value="{{ $simulation->customer_name }}"></form>
     <form id="pdfForm" action="/simulator/pdf" method="POST" style="display:none;">@csrf<input type="hidden" name="usd_jpy" id="pdf-rate"><input type="hidden" name="feather_usd" id="pdf-fusd"><input type="hidden" name="feather_type" id="pdf-ftype"><input type="hidden" name="origin" id="pdf-origin"><input type="hidden" name="down_ratio" id="pdf-ratio"><input type="hidden" name="sell_price_jpy" id="pdf-sell"><input type="hidden" name="customer_name" id="pdf-customer"></form>
 
     <script>

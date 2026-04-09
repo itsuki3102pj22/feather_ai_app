@@ -178,4 +178,43 @@ class SimulatorController extends Controller
 
         return view('simulator.history', compact('monthly', 'histories'));
     }
+
+    public function result(Simulation $simulation)
+    {
+        // 産地×種類の価格係数
+        $coefficients = [
+            '中国'       => ['ホワイトダック' => 1.00, 'グレーダック' => 0.85, 'ホワイトグース' => 1.40, 'グレーグース' => 1.20],
+            'フランス'   => ['ホワイトダック' => 1.35, 'グレーダック' => 1.20, 'ホワイトグース' => 1.80, 'グレーグース' => 1.60],
+            'ロシア'     => ['ホワイトダック' => 1.10, 'グレーダック' => 0.95, 'ホワイトグース' => 1.50, 'グレーグース' => 1.30],
+            'イタリア'   => ['ホワイトダック' => 1.30, 'グレーダック' => 1.15, 'ホワイトグース' => 1.70, 'グレーグース' => 1.50],
+            'ウクライナ' => ['ホワイトダック' => 1.05, 'グレーダック' => 0.90, 'ホワイトグース' => 1.45, 'グレーグース' => 1.25],
+            'ポーランド' => ['ホワイトダック' => 1.10, 'グレーダック' => 0.95, 'ホワイトグース' => 1.50, 'グレーグース' => 1.30],
+        ];
+
+        // ダウン比率リスト
+        $downRatios = FeatherConstants::DOWN_RATIOS;
+
+        // 産地×ダウン比率の全組み合わせで計算
+        $priceTable = [];
+        foreach ($coefficients as $origin => $types) {
+            $originCoeff = $types[$simulation->feather_type] ?? 1.00;
+            $row = ['origin' => $origin, 'prices' => []];
+            foreach ($downRatios as $ratio) {
+                $downCoeff    = $ratio / 85;
+                $costJpy      = $simulation->feather_usd * $simulation->usd_jpy * $originCoeff * $downCoeff;
+                $sellJpy      = $costJpy * (1 + $simulation->profit_rate / 100);
+                $row['prices'][$ratio] = [
+                    'cost' => round($costJpy, 0),
+                    'sell' => round($sellJpy, 0),
+                ];
+            }
+            $priceTable[] = $row;
+        }
+
+        return view('simulator.result', compact(
+            'simulation',
+            'priceTable',
+            'downRatios'
+        ));
+    }
 }

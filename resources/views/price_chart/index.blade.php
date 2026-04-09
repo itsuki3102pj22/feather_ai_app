@@ -60,7 +60,10 @@
             </div>
         </div>
         <nav class="flex-1 space-y-1">
-            <a href="/simulator" class="flex items-center gap-3 px-4 py-3 text-secondary hover:bg-slate-100 rounded-lg transition-all font-headline text-sm">
+            <a href="/dashboard" class="flex items-center gap-3 px-4 py-3 text-secondary hover:bg-slate-100 rounded-lg transition-all font-headline text-sm">
+                <span class="material-symbols-outlined">dashboard</span><span>ダッシュボード</span>
+            </a>
+            <a href="/simulator/form" class="flex items-center gap-3 px-4 py-3 text-secondary hover:bg-slate-100 rounded-lg transition-all font-headline text-sm">
                 <span class="material-symbols-outlined">calculate</span><span>価格計算</span>
             </a>
             <a href="/price-chart" class="flex items-center gap-3 px-4 py-3 sidebar-active font-bold rounded-lg transition-all font-headline text-sm">
