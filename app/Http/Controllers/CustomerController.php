@@ -5,24 +5,35 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Contract;
+use App\Constants\FeatherConstants;
 
 class CustomerController extends Controller
 {
     // 得意先一覧と契約情報表示
     public function index(Request $request)
     {
-        $customers = Customer::all();
+        $customers = Customer::orderBy('name')->get();
         $selectedCustomer = null;
         $contracts = collect();
 
         if ($request->has('customer_id') && $request->customer_id) {
             $selectedCustomer = Customer::find($request->customer_id);
+            if (!$selectedCustomer) {
+                return redirect('/customers')->withErrors(['customer_id' => '得意先が見つかりません。']);
+            }
             $contracts = Contract::where('customer_id', $request->customer_id)
                 ->orderBy('season', 'desc')
                 ->orderBy('feather_type')
                 ->get();
         }
-        return view('customers.index', compact('customers', 'selectedCustomer', 'contracts'));
+        return view('customers.index', [
+            'customers' => $customers,
+            'selectedCustomer' => $selectedCustomer,
+            'contracts' => $contracts,
+            'featherTypes' => FeatherConstants::FEATHER_TYPES,
+            'origins' => FeatherConstants::ORIGINS,
+            'downRatios' => FeatherConstants::DOWN_RATIOS,
+        ]);
     }
 
     // 得意先登録
@@ -55,9 +66,9 @@ class CustomerController extends Controller
         $request->validate([
             'customer_id'    => 'required|exists:customers,id',
             'season'         => 'required|string|max:20',
-            'feather_type'   => 'required|in:ホワイトダック,グレーダック,ホワイトグース,グレーグース',
-            'origin'         => 'required|in:中国,フランス,ロシア,イタリア,ウクライナ,ポーランド',
-            'down_ratio'     => 'required|numeric|in:70,75,80,85,90,93,95',
+            'feather_type'   => FeatherConstants::featherTypeRule(),
+            'origin'         => FeatherConstants::originRule(),
+            'down_ratio'     => FeatherConstants::downRatioRule(),
             'contract_kg'    => 'required|numeric|min:1.0|max:999999',
             'unit_price_jpy' => 'nullable|numeric|min:1.0|max:999999',
             'comment'        => 'nullable|string|max:500',

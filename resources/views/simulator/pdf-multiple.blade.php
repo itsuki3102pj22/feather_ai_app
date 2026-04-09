@@ -60,10 +60,10 @@
         <tbody>
             @foreach($items as $item)
             <tr>
-                <td>{{ $item['feather_type'] }}</td>
-                <td>{{ $item['origin'] }}</td>
-                <td>{{ $item['down_ratio'] }}%</td>
-                <td>¥{{ number_format($item['sell_price'], 0) }} / kg</td>
+                <td>{{ $item['feather_type'] ?? 'N/A' }}</td>
+                <td>{{ $item['origin'] ?? 'N/A' }}</td>
+                <td>{{ $item['down_ratio'] ?? 'N/A' }}%</td>
+                <td>¥{{ number_format($item['sell_price'] ?? 0, 0) }} / kg</td>
             </tr>
             @endforeach
         </tbody>

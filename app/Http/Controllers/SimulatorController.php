@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Simulation;
+use App\Constants\FeatherConstants;
 
 class SimulatorController extends Controller
 {
     public function form()
     {
-        return view('simulator.form');
+        return view('simulator.form', [
+            'featherTypes' => FeatherConstants::FEATHER_TYPES,
+            'origins' => FeatherConstants::ORIGINS,
+        ]);
     }
 
     public function analyze(Request $request)
@@ -19,8 +23,8 @@ class SimulatorController extends Controller
         $request->validate([
             'usd_jpy'       => 'required|numeric|min:1|max:1000',
             'feather_usd'   => 'required|numeric|min:0.01|max:9999',
-            'feather_type'  => 'required|in:ホワイトダック,グレーダック,ホワイトグース,グレーグース',
-            'origin'        => 'required|in:中国,フランス,ロシア,イタリア,ウクライナ,ポーランド',
+            'feather_type'  => FeatherConstants::featherTypeRule(),
+            'origin'        => FeatherConstants::originRule(),
             'profit_rate'   => 'required|numeric|min:0|max:100',
             'customer_name' => 'nullable|string|max:100',
         ], [
@@ -41,7 +45,7 @@ class SimulatorController extends Controller
         // デフォルト設定
         $usdJpy      = $request->input('usd_jpy', 150);
         $featherUsd  = $request->input('feather_usd', 95);
-        $featherType = $request->input('feather_type', 'ホワイトダック');
+        $featherType = $request->input('feather_type', FeatherConstants::FEATHER_TYPES[0]);
         $profitRate  = $request->input('profit_rate', 10);
         $customerName = $request->input('customer_name', '');
 
@@ -56,7 +60,7 @@ class SimulatorController extends Controller
         ];
 
         // ダウン比率リスト
-        $downRatios = [50, 70, 80, 85, 90, 93, 95];
+        $downRatios = FeatherConstants::DOWN_RATIOS;
 
         // 産地×ダウン比率の全組み合わせで計算
         $priceTable = [];
@@ -106,12 +110,22 @@ class SimulatorController extends Controller
 
     public function pdf(Request $request)
     {
-        $usdJpy      = $request->input('usd_jpy', 150);
-        $featherUsd  = $request->input('feather_usd', 95);
-        $featherType = $request->input('feather_type', 'ホワイトダック');
-        $origin      = $request->input('origin', '中国');
-        $downRatio   = $request->input('down_ratio', 85);
-        $sellPrice   = $request->input('sell_price_jpy', 0);
+        $request->validate([
+            'usd_jpy'      => 'required|numeric|min:1|max:1000',
+            'feather_usd'  => 'required|numeric|min:0.01|max:9999',
+            'feather_type' => 'required|in:ホワイトダック,グレーダック,ホワイトグース,グレーグース',
+            'origin'       => 'required|in:中国,フランス,ロシア,イタリア,ウクライナ,ポーランド',
+            'down_ratio'   => 'required|numeric|in:50,70,75,80,85,90,93,95',
+            'sell_price_jpy' => 'required|numeric|min:0',
+            'customer_name' => 'nullable|string|max:100',
+        ]);
+
+        $usdJpy      = $request->input('usd_jpy');
+        $featherUsd  = $request->input('feather_usd');
+        $featherType = $request->input('feather_type');
+        $origin      = $request->input('origin');
+        $downRatio   = $request->input('down_ratio');
+        $sellPrice   = $request->input('sell_price_jpy');
         $customerName = $request->input('customer_name', '');
 
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('simulator.pdf', compact(
@@ -129,7 +143,16 @@ class SimulatorController extends Controller
 
     public function pdfMultiple(Request $request)
     {
+        $request->validate([
+            'items' => 'required|json',
+            'customer_name' => 'nullable|string|max:100',
+        ]);
+
         $items = json_decode($request->input('items'), true);
+        if (!is_array($items) || empty($items)) {
+            return redirect('/simulator')->withErrors(['items' => '1件以上の品種を選択してください。']);
+        }
+
         $customerName = $request->input('customer_name', '');
 
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('simulator.pdf-multiple', compact('items', 'customerName'));

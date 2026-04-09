@@ -16,7 +16,7 @@ Route::post('/simulator/pdf-multiple', [SimulatorController::class, 'pdfMultiple
 Route::get('/simulator/history', [SimulatorController::class, 'history']);
 Route::get('/price-chart', [PriceChartController::class, 'index']);
 Route::post('/price-chart/store', [PriceChartController::class, 'store']);
-Route::post('/price-chart/comment', [PriceChartController::class, 'comment']);
+Route::post('/price-chart/comment', [PriceChartController::class, 'updateComment']);
 Route::get('/customers', [CustomerController::class, 'index']);
 Route::post('/customers', [CustomerController::class, 'store']);
 Route::post('/customers/contract', [CustomerController::class, 'storeContract']);

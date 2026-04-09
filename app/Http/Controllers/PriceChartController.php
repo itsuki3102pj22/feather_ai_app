@@ -64,6 +64,11 @@ class PriceChartController extends Controller
 
     public function updateComment(Request $request)
     {
+        $request->validate([
+            'manual_comment' => 'nullable|string|max:500',
+            'ai_comment' => 'nullable|string|max:500',
+        ]);
+
         $record = PriceRecord::orderByDesc('record_date')->first();
         if ($record) {
             $record->update([

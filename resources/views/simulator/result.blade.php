@@ -278,7 +278,17 @@
         function submitMultiplePdf() {
             const selected = [];
             document.querySelectorAll('.row-check:checked').forEach(cb => {
-                selected.push(priceTableData[cb.dataset.index]);
+                const row = priceTableData[cb.dataset.index];
+                const featherType = document.getElementById('pdf-ftype').value || '{{ $featherType }}';
+                const defaultRatio = 85;
+                const sellPrice = row.prices[defaultRatio]?.sell || 0;
+                
+                selected.push({
+                    feather_type: featherType,
+                    origin: row.origin,
+                    down_ratio: defaultRatio,
+                    sell_price: sellPrice
+                });
             });
             document.getElementById('pdf-items').value = JSON.stringify(selected);
             document.getElementById('pdfMultipleForm').submit();

@@ -212,21 +212,17 @@
                                 <div class="space-y-2">
                                     <label class="block text-xs font-bold text-[#455f88] uppercase tracking-wider ml-1">羽毛の種類</label>
                                     <select class="w-full bg-surface-container-lowest border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-secondary/20 shadow-sm appearance-none" name="feather_type">
-                                        <option value="ホワイトダック">ホワイトダック</option>
-                                        <option value="グレーダック">グレーダック</option>
-                                        <option value="ホワイトグース">ホワイトグース</option>
-                                        <option value="グレーグース">グレーグース</option>
+                                        @foreach($featherTypes as $type)
+                                        <option value="{{ $type }}">{{ $type }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="space-y-2">
                                     <label class="block text-xs font-bold text-[#455f88] uppercase tracking-wider ml-1">産地</label>
                                     <select class="w-full bg-surface-container-lowest border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-secondary/20 shadow-sm" name="origin">
-                                        <option value="中国">中国</option>
-                                        <option value="フランス">フランス</option>
-                                        <option value="ロシア">ロシア</option>
-                                        <option value="イタリア">イタリア</option>
-                                        <option value="ウクライナ">ウクライナ</option>
-                                        <option value="ポーランド">ポーランド</option>
+                                        @foreach($origins as $origin)
+                                        <option value="{{ $origin }}">{{ $origin }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="md:col-span-2 space-y-2">
