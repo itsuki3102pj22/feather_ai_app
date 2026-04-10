@@ -163,9 +163,9 @@
                             <p class="text-[10px] text-slate-500 uppercase font-bold">USD/JPY</p>
                             <p class="font-headline font-bold text-[#455f88]">Auto-Sync</p>
                         </div>
-                        <div class="w-12 h-12 rounded-full bg-[#d6e3ff] flex items-center justify-center text-[#455f88]">
-                            <span class="material-symbols-outlined" data-icon="sync">sync</span>
-                        </div>
+                        <button id="syncButton" type="button" class="w-12 h-12 rounded-full bg-[#d6e3ff] flex items-center justify-center text-[#455f88] hover:bg-[#c5d9ff] transition-all cursor-pointer">
+                            <span class="material-symbols-outlined animate-spin" id="syncIcon" data-icon="sync">sync</span>
+                        </button>
                     </div>
                 </div>
                 <div class="bg-[#002705] p-8 rounded-xl text-white shadow-lg flex flex-col justify-between overflow-hidden relative">
@@ -324,17 +324,39 @@
         </div>
     </main>
     <script>
-        fetch('https://open.er-api.com/v6/latest/USD')
-            .then(response => response.json())
-            .then(data => {
-                const jpyRate = data.rates.JPY;
-                document.getElementById('rate-display').innerText = `¥${jpyRate.toFixed(2)}`;
-                document.getElementById('usd_jpy_input').value = jpyRate;
-                const now = new Date();
-                const timestamp = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} (JST)`;
-                document.getElementById('update-time').innerText = timestamp;
-            })
-            .catch(error => console.error('Error fetching exchange rate:', error));
+        // 為替取得関数
+        function fetchExchangeRate() {
+            const button = document.getElementById('syncButton');
+            const icon = document.getElementById('syncIcon');
+            button.disabled = true;
+            
+            fetch('https://open.er-api.com/v6/latest/USD')
+                .then(response => response.json())
+                .then(data => {
+                    const jpyRate = data.rates.JPY;
+                    document.getElementById('rate-display').innerText = `¥${jpyRate.toFixed(2)}`;
+                    document.getElementById('usd_jpy_input').value = jpyRate;
+                    const now = new Date();
+                    const timestamp = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} (JST)`;
+                    document.getElementById('update-time').innerText = timestamp;
+                    button.disabled = false;
+                })
+                .catch(error => {
+                    console.error('Error fetching exchange rate:', error);
+                    button.disabled = false;
+                });
+        }
+
+        // 初期化時に為替取得
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchExchangeRate();
+            
+            // Auto-Syncボタンにイベントリスナーを追加
+            const syncButton = document.getElementById('syncButton');
+            if (syncButton) {
+                syncButton.addEventListener('click', fetchExchangeRate);
+            }
+        });
     </script>
 </body>
 

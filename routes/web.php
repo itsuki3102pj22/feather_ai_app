@@ -33,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
     Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create');
     Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
+    Route::post('/customers/contract/destroy', [CustomerController::class, 'destroyContract'])->name('customers.contract.destroy');
+    Route::post('/customers/ship', [CustomerController::class, 'addShipment'])->name('customers.ship');
     Route::get('/customers/{customer}', [CustomerController::class, 'show'])->name('customers.show');
     Route::get('/customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
     Route::patch('/customers/{customer}', [CustomerController::class, 'update'])->name('customers.update');
@@ -42,6 +44,8 @@ Route::middleware('auth')->group(function () {
 
     // Price Chart routes
     Route::get('/price-chart', [PriceChartController::class, 'index'])->name('price_chart.index');
+    Route::post('/price-chart/comment', [PriceChartController::class, 'updateComment'])->name('price_chart.comment');
+    Route::post('/price-chart/store', [PriceChartController::class, 'store'])->name('price_chart.store');
 });
 
 require __DIR__ . '/auth.php';

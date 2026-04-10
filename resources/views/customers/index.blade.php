@@ -45,6 +45,16 @@
             animation: fade-in 0.2s ease-out;
         }
 
+        #newCustomerModal.modal-show,
+        #newContractModal.modal-show {
+            display: flex !important;
+        }
+
+        #newCustomerModal.hidden,
+        #newContractModal.hidden {
+            display: none !important;
+        }
+
         @keyframes fade-in {
             from {
                 opacity: 0;
@@ -277,7 +287,7 @@
             </div>
             @endif
 
-            <form method="POST" action="/customers/contract" class="space-y-4">
+            <form method="POST" action="/customers/{{ $selectedCustomer->id }}/contracts" class="space-y-4">
                 @csrf
                 <input type="hidden" name="customer_id" value="{{ optional($selectedCustomer)->id }}">
 
@@ -371,13 +381,14 @@
         // ページ読み込み時にバリデーションエラーがあれば、該当するモーダルを自動展開
         window.onload = () => {
             @if($errors->any())
-                @if($errors->has('name'))
-                    toggleModal('newCustomerModal');
-                @else
-                    toggleModal('newContractModal');
-                @endif
+            @if($errors->has('name'))
+            toggleModal('newCustomerModal');
+            @else
+            toggleModal('newContractModal');
+            @endif
             @endif
         };
     </script>
 </body>
+
 </html>

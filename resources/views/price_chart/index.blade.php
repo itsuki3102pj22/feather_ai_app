@@ -137,7 +137,7 @@
                         </ul>
                     </div>
                     @endif
-                    <form action="/price-chart/comment" method="POST" class="space-y-4">
+                    <form action="{{ route('price_chart.comment') }}" method="POST" class="space-y-4">
                         @csrf
                         <textarea name="manual_comment" rows="3" class="w-full bg-white/5 border-white/10 rounded-xl text-sm placeholder:text-white/30 focus:ring-accent-green focus:border-accent-green" placeholder="市場の動き・為替の影響を入力...">{{ $latestComment?->manual_comment }}</textarea>
                         <button type="submit" class="w-full bg-accent-green text-white py-3 rounded-xl text-sm font-bold hover:brightness-110 transition-all">コメントを更新</button>
@@ -148,7 +148,7 @@
                     <h3 class="font-headline font-extrabold text-lg text-navy-dark mb-6 flex items-center gap-2">
                         <span class="material-symbols-outlined text-accent-green">add_chart</span>価格データ登録
                     </h3>
-                    <form action="/price-chart/store" method="POST" class="space-y-5">
+                    <form action="{{ route('price_chart.store') }}" method="POST" class="space-y-5">
                         @csrf
                         <input type="hidden" name="usd_jpy" id="store_usd_jpy" value="">
 

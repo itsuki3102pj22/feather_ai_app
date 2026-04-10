@@ -69,8 +69,17 @@ class PriceChartController extends Controller
             'ai_comment' => 'nullable|string|max:500',
         ]);
 
+        // 最新の記録日のレコードを取得、なければ本日のレコードを作成
         $record = PriceRecord::orderByDesc('record_date')->first();
-        if ($record) {
+        if (!$record) {
+            // 初回登録の場合
+            $record = PriceRecord::create([
+                'record_date' => now()->date(),
+                'period_type' => 'monthly',
+                'manual_comment' => $request->input('manual_comment'),
+            ]);
+        } else {
+            // 既存レコードを更新
             $record->update([
                 'manual_comment' => $request->input('manual_comment'),
                 'ai_comment' => $request->input('ai_comment'),

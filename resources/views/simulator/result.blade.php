@@ -126,8 +126,8 @@
 
             <section class="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
                 <div class="flex items-center gap-2">
-                    <button class="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 rounded-lg transition-all" onclick="selectAll()">一括選択</button>
-                    <button class="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 rounded-lg transition-all" onclick="clearAll()">解除</button>
+                    <button class="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 rounded-lg transition-all" onclick="toggleAll(true)">一括選択</button>
+                    <button class="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 rounded-lg transition-all" onclick="toggleAll(false)">解除</button>
                     <div class="h-4 w-px bg-slate-200 mx-2"></div>
                     <span class="text-xs font-bold text-slate-400" id="selectedCount">0 件選択中</span>
                 </div>
@@ -279,10 +279,12 @@
             const selected = [];
             document.querySelectorAll('.row-check:checked').forEach(cb => {
                 const row = priceTableData[cb.dataset.index];
-                const featherType = document.getElementById('pdf-ftype').value || '{{ $featherType }}';
+
+                const featherType = '{{ $simulation->feather_type }}'; // ← 修正
+
                 const defaultRatio = 85;
                 const sellPrice = row.prices[defaultRatio]?.sell || 0;
-                
+
                 selected.push({
                     feather_type: featherType,
                     origin: row.origin,
@@ -290,6 +292,7 @@
                     sell_price: sellPrice
                 });
             });
+
             document.getElementById('pdf-items').value = JSON.stringify(selected);
             document.getElementById('pdfMultipleForm').submit();
         }

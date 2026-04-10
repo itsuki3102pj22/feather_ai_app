@@ -84,7 +84,7 @@ class SimulatorController extends Controller
         $priceJpy    = $featherUsd * $usdJpy * $baseCoeff;
         $salePriceJpy = $priceJpy * (1 + $profitRate / 100);
 
-        \App\Models\Simulation::create([
+        $simulation = \App\Models\Simulation::create([
             'feather_type'    => $featherType,
             'origin'          => '中国',
             'down_ratio'      => 85,
@@ -98,11 +98,7 @@ class SimulatorController extends Controller
         ]);
 
         return view('simulator.result', compact(
-            'usdJpy',
-            'featherUsd',
-            'featherType',
-            'profitRate',
-            'customerName',
+            'simulation',
             'priceTable',
             'downRatios'
         ));
