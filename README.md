@@ -1,59 +1,107 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Aerostat は、
+羽毛原料の価格シミュレーションから契約・出荷管理までを一元化したWebアプリケーションです。
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+価格判断の迅速化と、契約・在庫状況の可視化による業務効率化を目的として開発しました。
 
-## About Laravel
+🚀 主な機能
+📊 価格シミュレーション
+ドル単価 × 為替レートから販売価格を自動計算
+ダウン比率ごとの価格一覧表示
+利益率変更によるリアルタイム再計算
+PDF出力（単体 / 一括）
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+🧾 契約管理
+得意先ごとの契約登録
+シーズン / 羽毛種 / 産地 / ダウン比率の管理
+契約数量・単価の登録
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+🚚 出荷管理
+出荷数量の入力
+残在庫・進捗率の自動計算
+契約ごとのデリバリー状況を可視化
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+📈 その他
+価格履歴管理
+得意先管理（CRUD）
+モダンUI（Tailwind CSS）
 
-## Learning Laravel
+🛠 技術スタック
+Backend: Laravel 12 / PHP 8.5
+Frontend: Blade / Tailwind CSS
+Database: MySQL
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+技術選定理由
+Laravel：開発効率と保守性を重視
+Blade + Tailwind：軽量かつ高速にUI構築
+MySQL：実務でも一般的な構成を採用
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+📸 スクリーンショット
+① ダッシュボード
+<img width="2660" height="2240" src="https://github.com/user-attachments/assets/62a49a25-5644-48b6-94c8-62261bf9284e" />
 
-## Laravel Sponsors
+② 価格計算
+<img width="2660" height="1964" src="https://github.com/user-attachments/assets/b2c64523-510a-4c2c-b31d-d20994fe6edf" />
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+③ 価格推移
+<img width="2660" height="2388" src="https://github.com/user-attachments/assets/e809f1f5-dccc-4948-ae78-7a0fcd77070d" />
 
-### Premium Partners
+④ 得意先管理
+<img width="2660" height="1964" src="https://github.com/user-attachments/assets/b189b28d-ec97-4863-b65a-77b067eed39c" />
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+⑤ 履歴
+<img width="2660" height="4244" src="https://github.com/user-attachments/assets/556ebed8-bfb6-493f-bf70-28891df671d9" />
 
-## Contributing
+⚙️ セットアップ方法
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+git clone https://github.com/your-username/aerostat.git
+cd aerostat
 
-## Code of Conduct
+cp .env.example .env
+composer install
+php artisan key:generate
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# DB設定を.envで行ってください
+php artisan migrate
 
-## Security Vulnerabilities
+php artisan serve
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+🔐 ログインについて
 
-## License
+Laravel Breeze（または認証機能）を使用しています。
+ユーザー登録後にログインしてください。
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+📂 主な構成
+
+app/
+ ├── Http/Controllers/
+ │     ├── SimulatorController.php
+ │     ├── CustomerController.php
+ │     └── PriceChartController.php
+
+resources/views/
+ ├── simulator/
+ ├── customers/
+ └── price-chart/
+
+---
+
+🎯 工夫したポイント
+シミュレーションと契約管理を一体化
+モーダル＋リアルタイム計算でUX向上
+実務を意識したデータ設計
+一括PDF出力による業務効率化
+
+🧩 今後の改善予定
+グラフ機能の強化
+CSVエクスポート
+権限管理（ユーザーごと）
+API化（フロント分離）
+
+👨‍💻 開発者
+GitHub: https://github.com/itsuki3102pj22
+
+📄 ライセンス
+MIT License
