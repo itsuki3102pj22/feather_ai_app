@@ -287,7 +287,7 @@
             </div>
             @endif
 
-            <form method="POST" action="/customers/{{ $selectedCustomer->id }}/contracts" class="space-y-4">
+            <form method="POST" action="{{ $selectedCustomer ? route('customers.contracts.store', $selectedCustomer) : '#' }}" class="space-y-4">
                 @csrf
                 <input type="hidden" name="customer_id" value="{{ optional($selectedCustomer)->id }}">
 
@@ -318,7 +318,7 @@
                     <div class="space-y-1">
                         <label class="text-[10px] font-black text-slate-400 uppercase ml-1">ダウン比率</label>
                         <select name="down_ratio" class="w-full bg-slate-50 border-none rounded-xl text-sm font-bold py-3">
-                            @foreach([85, 90, 93, 95, 70, 75, 80] as $ratio)
+                            @foreach([50, 70, 85, 90, 93, 95] as $ratio)
                             <option value="{{ $ratio }}" {{ old('down_ratio', 85) == $ratio ? 'selected' : '' }}>{{ $ratio }}%</option>
                             @endforeach
                         </select>
